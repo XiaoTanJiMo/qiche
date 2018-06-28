@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--指向UserDao-->
+<mapper namespace="com.oaec.qiche.dao.UserDao">
+<!--登录的其中id和UserDao中的login方法要一样，parameterType是参数类型，resultType是返回的类型-->
+    <select id="login" parameterType="user01"  resultType="user01">
+        select *  from user01  where username=#{username} and password=#{password}
+    </select>
+<!--模糊查询汽车信息-->
+    <select id="query" parameterType="qiche" resultType="map">
+        select * ,CONVERT(varchar(100), times, 20) cd from qiche where  1 = 1
+        <if test="pinpai!=null and pinpai!=''">
+            and pinpai like CONCAT('%',#{pinpai},'%')
+        </if>
+        <if test="xinghao!=null and xinghao!=''">
+            and xinghao like CONCAT('%',#{xinghao},'%')
+        </if>
+    </select>
+<!--条件查询汽车信息-->
+    <select id="queryqc" parameterType="qiche" resultType="map">
+        select * from qiche where id=#{id}
+    </select>
+<!--汽车的增加-->
+    <insert id="addqc" parameterType="qiche">
+        insert into qiche(pinpai, xinghao, jiage, miaoshu, times)
+        VALUES (#{pinpai},#{xinghao},#{jiage},#{miaoshu},getdate())
+    </insert>
+<!--汽车的更新-->
+    <update id="updateqc" parameterType="qiche">
+        update qiche set pinpai=#{pinpai},xinghao=#{xinghao},jiage=#{jiage},miaoshu=#{miaoshu} where id=#{id}
+    </update>
+
+</mapper>
